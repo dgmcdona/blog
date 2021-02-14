@@ -15,7 +15,7 @@ As a graduate assistant at the University of New Orleans, I was tasked with eval
 
 One of the nicest things about Proxmox is it's ease-of-use, even for someone new to virtualization. Simply grab a [Proxmox ISO](https://www.proxmox.com/en/downloads/category/iso-images-pve), flash it to a USB drive using a tool like [balena-etcher](https://www.balena.io/etcher/), and install it on a spare desktop computer that you have lying around your house. This computer _will_ need to have a 64-bit processor that supports hardware virtualization, but most computers made in the last 6 years, and many before that, do. It will also need to have internet access, either through WiFi or ethernet.
 
-Once you've navigated the [installation](https://pve.proxmox.com/wiki/Main_Page) process, and gone through the basic configuration steps, you'll be ready to start spinning up your own VMs and containers.
+Once you've navigated the [installation](https://pve.proxmox.com/wiki/Main_Page) process, and gone through the basic configuration steps, you'll be ready to start spinning up your own VMs and containers through the Proxmox VE web interface. You can navigate to this via _another_ computer on your home network, like your laptop, by visiting `https://<proxmox_IP_address>:8006`. The Proxmox IP address can be obtained via the command line on your Proxmox machine by running `ip a`.
 
 ## Creating an LXC container
 
