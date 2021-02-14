@@ -26,17 +26,17 @@ For our Folding@Home installation, we aren't going to be using a full-fledged QE
 3. Select the 'Templates' button near the top center of the frame. This will open up a list of LXC templates, which are worth exploring in more depth. In the `turnkeylinux` section you can find premade images for a number of cool services that you can host from this computer. The beauty of virtualization is that it allows us to run a diverse set of services from a single hardware unit quite easily, without these separate installations conflicting or interfering with each other. For now, you can just select `debian-10-standard` from the `system` section, and click download. Once you see in the output window that the download has finished, you can exit this window.
 4. Click the 'Create CT' button at the top to begin the setup process for a new LXC container. You'll need to set up at the very least a password, along with configuring this container's CPU/Memory allowances, and network configurations. You'll probably just want to use DHCP for obtaining an IP address, but you can of course configure a static IP if that's your preference. Once you have things configured to your liking, press continue, and once the output screen displays `TASK OK`, you can close the window.
 
-![Downloading and configuring the LXC template](../assets/configure_lxc.png)
+![Downloading and configuring the LXC template]({{ site.baseurl }}/assets/configure_lxc.png)
 
 ## Installing Folding@Home
 
 We're finally at the last step: let's install the Folding@Home packages, and start the necessary services. Actually, you don't need to worry about starting the services; this is done automatically when the Debian packages are installed. Find your container in the list on the leftmost pane, select the console tab on the inner pane, and run the [commands](https://test.foldingathome.org/support/faq/installation-guides/linux/manual-installation-advanced/?lng=en-US) to download and install the Folding@Home debian packages.
 
-![Accessing the LXC console](../assets/lxc_console.png)
+![Accessing the LXC console]({{ site.baseurl }}/assets/lxc_console.png)
 
 Assuming nothing went wrong along the way, you are now officially contributing to the Folding@Home project! Your CPU is working on a small piece of the massive computations required to understand the ways in which proteins fold and interact. You can monitor the progress of the latest Folding@Home sprint at their [homepage](https://foldingathome.org).
 
-![Example of the COVID-19 Folding@Home sprint progress](../assets/covid_sprint_progress.png)
+![Example of the COVID-19 Folding@Home sprint progress]({{ site.baseurl }}/assets/covid_sprint_progress.png)
 
 ## Conclusion
 
