@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Folding@Home with Proxmox | Memory Leaks</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Folding@Home with Proxmox" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Folding@Home with Proxmox" />
+<meta property="og:description" content="Folding@Home with Proxmox" />
+<link rel="canonical" href="https://dgmcdona.github.io/2021/02/14/Folding-at-home-with-Proxmox.html" />
+<meta property="og:url" content="https://dgmcdona.github.io/2021/02/14/Folding-at-home-with-Proxmox.html" />
+<meta property="og:site_name" content="Memory Leaks" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-14T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Folding@Home with Proxmox" />
+<script type="application/ld+json">
+{"description":"Folding@Home with Proxmox","url":"https://dgmcdona.github.io/2021/02/14/Folding-at-home-with-Proxmox.html","@type":"BlogPosting","headline":"Folding@Home with Proxmox","dateModified":"2021-02-14T00:00:00+00:00","datePublished":"2021-02-14T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://dgmcdona.github.io/2021/02/14/Folding-at-home-with-Proxmox.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://dgmcdona.github.io/feed.xml" title="Memory Leaks" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Memory Leaks</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Folding@Home with Proxmox</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2021-02-14T00:00:00+00:00" itemprop="datePublished">Feb 14, 2021
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="foldinghome-with-proxmox">Folding@Home with Proxmox</h1>
+
+<p>Welcome to my blog! This is my first post, and I’m not quite sure what the general theme of this blog is going to be. Tentatively, I’ll just use it as a place to talk about things that I’m working on and things that I find interesting from my job, my education, or my free time.</p>
+
+<p>Obviously, COVID-19 has been an utter tragedy and a disaster for many people across the world. The sooner that scientists can develop effective vaccines and treatments, the better off we’ll all be, and the sooner we can return to some semblance of normalcy. Fortunately, you can contribute to this scientific endeavor in your own way, even if you aren’t a nurse, doctor, epidemiologist, or virologist. All you have to do are follow the steps outlined in this post, and you’ll be contributing to the search for cures and treatments, at very little cost to yourself, through the power of virtualization and the <a href="https://foldingathome.org/">Folding@Home</a> project. By allowing the Folding@Home project to use a little bit (or a lot, if you’re feeling generous) of your CPU time, you can buy us all a few more tickets to to the cure lottery than we had before. My interest in this project stemmed from the now-defunct 1990’s Search for Extraterrestrial Intelligence at Home (<a href="https://en.wikipedia.org/wiki/SETI@home">SETI@HOME</a>) project. As cool as that was, Folding@Home’s mission is much more immediate.</p>
+
+<h2 id="proxmox-virtual-environment">Proxmox Virtual Environment</h2>
+
+<p>As a graduate assistant at the University of New Orleans, I was tasked with evaluating virtualization platforms for the department. I won’t get into the full details of virtualization here, but a simple summary is that virtualization allows you to run multiple guest operating systems on a single host machine. The first hypervisor that I ever had hands on experience with was Proxmox VE. Proxmox is based on Debian Linux, and uses the Kernel-based Virtual Machine (KVM) module to function as a type-1 hypervisor.</p>
+
+<p>One of the nicest things about Proxmox is it’s ease-of-use, even for someone new to virtualization. Simply grab a <a href="https://www.proxmox.com/en/downloads/category/iso-images-pve">Proxmox ISO</a>, flash it to a USB drive using a tool like <a href="https://www.balena.io/etcher/">balena-etcher</a>, and install it on a spare desktop computer that you have lying around your house. This computer <em>will</em> need to have a 64-bit processor that supports hardware virtualization, but most computers made in the last 6 years, and many before that, do. It will also need to have internet access, either through WiFi or ethernet.</p>
+
+<p>Once you’ve navigated the <a href="https://pve.proxmox.com/wiki/Main_Page">installation</a> process, and gone through the basic configuration steps, you’ll be ready to start spinning up your own VMs and containers through the Proxmox VE web interface. You can navigate to this via <em>another</em> computer on your home network, like your laptop, by visiting <code class="highlighter-rouge">https://&lt;proxmox_IP_address&gt;:8006</code>. The Proxmox IP address can be obtained via the command line on your Proxmox machine by running <code class="highlighter-rouge">ip a</code>.</p>
+
+<h2 id="creating-an-lxc-container">Creating an LXC container</h2>
+
+<p>For our Folding@Home installation, we aren’t going to be using a full-fledged QEMU virtual machine. Instead, we’ll be running it inside of an <a href="https://en.wikipedia.org/wiki/LXC">LXC</a> container based on Debian 10, a minimal Linux distribution. Containers can share a Linux kernel, preserving resources (primarily RAM) consumed by running multiple kernels on a single host machine. This container will run using Promox’s kernel, but with its binaries and libraries isolated.</p>
+
+<ol>
+  <li>Navigate to a storage resource in the leftmost pane.</li>
+  <li>Select the ‘Content’ tab in the interior frame.</li>
+  <li>Select the ‘Templates’ button near the top center of the frame. This will open up a list of LXC templates, which are worth exploring in more depth. In the <code class="highlighter-rouge">turnkeylinux</code> section you can find premade images for a number of cool services that you can host from this computer. The beauty of virtualization is that it allows us to run a diverse set of services from a single hardware unit quite easily, without these separate installations conflicting or interfering with each other. For now, you can just select <code class="highlighter-rouge">debian-10-standard</code> from the <code class="highlighter-rouge">system</code> section, and click download. Once you see in the output window that the download has finished, you can exit this window.</li>
+  <li>Click the ‘Create CT’ button at the top to begin the setup process for a new LXC container. You’ll need to set up at the very least a password, along with configuring this container’s CPU/Memory allowances, and network configurations. You’ll probably just want to use DHCP for obtaining an IP address, but you can of course configure a static IP if that’s your preference. Once you have things configured to your liking, press continue, and once the output screen displays <code class="highlighter-rouge">TASK OK</code>, you can close the window.</li>
+</ol>
+
+<p><img src="/assets/configure_lxc.png" alt="Downloading and configuring the LXC template" /></p>
+
+<h2 id="installing-foldinghome">Installing Folding@Home</h2>
+
+<p>We’re finally at the last step: let’s install the Folding@Home packages, and start the necessary services. Actually, you don’t need to worry about starting the services; this is done automatically when the Debian packages are installed. Find your container in the list on the leftmost pane, select the console tab on the inner pane, and run the <a href="https://test.foldingathome.org/support/faq/installation-guides/linux/manual-installation-advanced/?lng=en-US">commands</a> to download and install the Folding@Home debian packages.</p>
+
+<p><img src="/assets/lxc_console.png" alt="Accessing the LXC console" /></p>
+
+<p>Assuming nothing went wrong along the way, you are now officially contributing to the Folding@Home project! Your CPU is working on a small piece of the massive computations required to understand the ways in which proteins fold and interact. You can monitor the progress of the latest Folding@Home sprint at their <a href="https://foldingathome.org">homepage</a>.</p>
+
+<p><img src="/assets/covid_sprint_progress.png" alt="Example of the COVID-19 Folding@Home sprint progress" /></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Thanks for sticking it out with me through this blog post. Every CPU cycle that you can spare makes a difference towards finding effective COVID-19 treatments, and hopefully, your interest in virtualization technologies has been piqued along the way! There are tons of different ways that you can use proxmox to host your own home ‘cloud’. I’d highly recommend looking into setting up a container to run <a href="https://pi-hole.net/">Pi-Hole</a>, which will provide ad and tracker blocking for your entire home network.</p>
+
+  </div><a class="u-url" href="/2021/02/14/Folding-at-home-with-Proxmox.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Memory Leaks</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Memory Leaks</li><li><a class="u-email" href="mailto:dgmcdona@uno.edu">dgmcdona@uno.edu</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/dgmcdona"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">dgmcdona</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A small blog where I write about my work, things I find interesting, and things that others can hopefully make use of.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
