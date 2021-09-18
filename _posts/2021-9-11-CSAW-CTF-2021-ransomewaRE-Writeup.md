@@ -96,7 +96,7 @@ f = open('encryptor.exe', 'wb')
 f.write(exe)
 {% endhighlight %}
 
-At this point, I moved on to reversing the encryptor, although there is still more interesting stuff to see in ransomwaRE.exe, such as the launching of the encryptor process and removal of the encryptor executable once it's execution is complete.
+At this point, I moved on to reversing the [encryptor]({{ site.baseurl }}/assets/ransomware/encryptor.exe), although there is still more interesting stuff to see in ransomwaRE.exe, such as the launching of the encryptor process and removal of the encryptor executable once it's execution is complete.
 
 ## Reversing the Encryptor
 
