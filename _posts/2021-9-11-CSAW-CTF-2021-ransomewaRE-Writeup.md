@@ -121,7 +121,7 @@ At this point, I tried to think of every way possible that I might be able to ob
 
 ![AES CTR Cipher Warning: reusing cryptographic keys and nonces is catastrophic]({{ site.baseurl }}/assets/ransomware/stackoverflow.png)
 
-You should never reuse a key/nonce combination when using AES CTR stream ciphers! The plaintext data is XORed against the ciphertext directly, producing a ciphertext of the exact same length of the original. Furthermore, we can see that for all except one of the encrypted files, we have the plaintext original copy. 
+You should never reuse a key/nonce combination when using AES CTR stream ciphers! The plaintext data is XORed against the cipher directly, producing a ciphertext of the exact same length of the original. Furthermore, we can see that for all except one of the encrypted files, we have the plaintext original copy. 
 
 ![Backup file hashes vs encrypted file names]({{ site.baseurl }}/assets/ransomware/hashes.png)
 
