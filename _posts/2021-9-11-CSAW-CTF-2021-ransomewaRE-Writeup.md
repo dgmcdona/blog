@@ -164,7 +164,7 @@ blob = xor(msg1_enc, flag_enc)
 # XOR the result of the previous operation against the known plaintext to
 # obtain the bytes of the encrypted pdf. Trim the results to the length of the
 # encrypted flag pdf.
-flag = xor(blob msg1_plain)[:len(flag_enc)]
+flag = xor(blob, msg1_plain)[:len(flag_enc)]
 
 f = open('flag.pdf', 'wb')
 f.write(flag)
