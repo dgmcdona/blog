@@ -209,7 +209,7 @@ If we XOR the encrypted bytes against each other, we have:
 ```
 enc1 ^ enc2 ⟶ (msg1 ^ key) ^ (msg2 ^ key)
 ```
-And because the XOR operator is associative, this can be reduced to:
+And because the XOR operator is associative and commutative, this can be reduced to:
 ```
 enc1 ^ enc2 ⟶ msg1 ^ msg2
 ```
