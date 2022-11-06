@@ -142,7 +142,7 @@ f = open('encryptor.exe', 'wb')
 f.write(exe)
 {% endhighlight %}
 
-I then switched my focus to the newly acquired [encryptor executable] ({{
+I then switched my focus to the newly acquired [encryptor executable]({{
 site.baseurl }}/assets/ransomware/encryptor.exe), although there is still
 more interesting stuff to see in ransomwaRE.exe, such as the launching of
 the encryptor process and removal of the encryptor executable once it's
