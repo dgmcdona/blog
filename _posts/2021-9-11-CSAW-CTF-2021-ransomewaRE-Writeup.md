@@ -38,7 +38,7 @@ functionality of this program.
 
 ![Function Imports]({{ site.baseurl }}/assets/ransomware/imports.png)
 
-The first step was to go through the each of the external function calls in the
+The next step was to go through the each of the external function calls in the
 main function and give any of the interesting parameters or return values
 meaningful names by renaming the variables in Ghidra. Sometimes you can avoid
 searching for documentation by hovering your cursor over the function call,
@@ -141,10 +141,11 @@ f = open('encryptor.exe', 'wb')
 f.write(exe)
 {% endhighlight %}
 
-At this point, I moved on to reversing the [encryptor]({{ site.baseurl
-}}/assets/ransomware/encryptor.exe), although there is still more interesting
-stuff to see in ransomwaRE.exe, such as the launching of the encryptor process
-and removal of the encryptor executable once it's execution is complete.
+I then switched my focus to the newly acquired [encryptor executable] ({{
+site.baseurl }}/assets/ransomware/encryptor.exe), although there is still
+more interesting stuff to see in ransomwaRE.exe, such as the launching of
+the encryptor process and removal of the encryptor executable once it's
+execution is complete.
 
 ## Reversing the Encryptor
 
