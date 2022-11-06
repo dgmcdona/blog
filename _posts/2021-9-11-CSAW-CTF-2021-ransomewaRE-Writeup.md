@@ -40,16 +40,17 @@ functionality of this program.
 
 The next step was to go through the each of the external function calls in the
 main function and give any of the interesting parameters or return values
-meaningful names by renaming the variables in Ghidra. Sometimes you can avoid
-searching for documentation by hovering your cursor over the function call,
-revealing a tooltip box with named parameters. 
+meaningful names, instead of the Ghidra defaults. For most system library
+function imports, you can avoid searching for documentation by hovering your
+cursor over the function call, revealing a tooltip box with named parameters. 
 
 The first thing of interest that happens in the program's `main` function is the
 initialization of a `_SYSTEMTIME` struct with by the `GetSystemTime` command.
 The day of the week, the month, the day, and the year are then copied from the
 struct into local variables, each of type `uint` (size: 4 bytes). It's important
 to note the organization of the local time variables in stack memory (seen boxed
-in red).
+in red). Ignore the `possible_key` variable in the screenshot, as that was
+actually probably just a stack canary.
 
 ![Loading the SYSTIME struct]({{ site.baseurl }}/assets/ransomware/systime.png)
 
@@ -66,9 +67,9 @@ memory, this function is hashing those values as a 16-byte array.
 
 ![Hashing the SYSTIME struct]({{ site.baseurl }}/assets/ransomware/hashtime.png)
 
-This hash value is then parsed into a hexadecimal string representation, and
-then converted again into a Windows wide-string representation, as seen here in
-the call to `MultiByteToWideChar`. This wide-string is then passed as the only
+This hash value is then parsed into a hexadecimal string representation, then
+converted again into a Windows wide-string representation, as seen here in the
+call to `MultiByteToWideChar`. This wide-string is then passed as the only
 parameter to the function `FUN_140001e10`.
 
 
@@ -103,11 +104,11 @@ At this point, I decided to write a python script that emulates the behavior of
 the program by creating an identical byte representation of the four
 `_SYSTEMTIME` variables' memory layout using the very handy `p32` function from
 `pwntools`, which packs each of the integers into a 32-bit little-endian array
-of bytes, and hashing those bytes. I knew what time values to place here because
-the authors specified that the attack occurred on July 11 of this year. I then
-appended that hash to the HTTP connection URL for the GET request, and was able
-to successfully download a large, base64 encoded chunk of data, which I then
-decoded, revealing a second Portable Executable. 
+of bytes, and hashing the concatentation of those bytes. I knew what time values
+to place here because the authors specified that the attack occurred on July 11
+of this year. I then appended that hash to the HTTP connection URL for the GET
+request, and was able to successfully download a large, base64 encoded chunk of
+data, which I then decoded, revealing a second Portable Executable. 
 
 {% highlight python %}
 from pwn import *
